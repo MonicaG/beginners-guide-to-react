@@ -5,7 +5,25 @@
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script src="https://unpkg.com/react-error-boundary@1.2.5/dist/umd/react-error-boundary.js"></script>
   <script type="text/babel">
+
+    /*
+      The problem: Error handling. If we don't handle errors the app will be removed from the page leaving a blank
+      screen. Oh No!
+      The solution: There are two solutions:
+      1) Use an Error Boundary component. See: https://reactjs.org/docs/error-boundaries.html
+      2) Use the react-error-boundary library. See: https://www.npmjs.com/package/react-error-boundary
+      This example uses the react-error-boundary library. The Error Boundary solution is included but commented out.
+      Note: The commented out code uses the same name 'ErrorBoundary' for its component as the react-error-boundary
+      library solution. This was so the instructor could easily switch between the two. In fact, the ErrorBoundary
+      class commentted out is a simplified version of the the ReactErrorBoundary.ErrorBoundary library class.
+    */
+
+    //this is solution 2 - react-error-boundary library
     const ErrorBoundary = ReactErrorBoundary.ErrorBoundary
+
+    /*
+    For solution 1, our ErrorBoundary can only be a class components. It cannot be created with a function.
+    */
     // class ErrorBoundary extends React.Component {
     //   state = {error: null}
     //   static getDerivedStateFromError(error) {
@@ -42,6 +60,13 @@
             <button onClick={() => setExplode(true)}>💣</button>
           </div>
           <div>
+            {/*
+              Error boundaries can only handle errors that occur within the React call stack: i.e. the render method or a
+              useEffect hook. It won't handle errors that occur in event handlers or if there's an error in an asynchronous 
+              callback, like a Promise handler. 
+
+              You can have multiple Error boundaries and nested ones too.
+            */}
             <ErrorBoundary FallbackComponent={ErrorFallback}>
               {explode ? <Bomb /> : 'Push the button Max!'}
             </ErrorBoundary>

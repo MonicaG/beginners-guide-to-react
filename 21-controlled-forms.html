@@ -4,6 +4,26 @@
   <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script type="text/babel">
+  /*
+    This example uses a controlled-component for creating the form. The 19-basic-forms.html and
+    20-dynamic-forms.html used uncontrolled-componet to create their forms. React generally recommends
+    using controlled-components for making forms.
+    See: https://reactjs.org/docs/forms.html#controlled-components
+
+    The problem: Rather than allowing a user to enter an upper case letter and displaying a warning message,
+    we want to prevent the user from entering an upper case letter at all. If they try to enter an uppercase
+    letter, then change it to a lowercase letter automatically. We want the user to see the letter being converted
+    to lower case as they type.
+
+    The solution: use a controlled-component for the form. From the react docs:
+    In HTML, form elements such as <input>, <textarea>, and <select> typically maintain their own state and 
+    update it based on user input. In React, mutable state is typically kept with the component, and updated with
+    useState hook. We can combine the two by making the React state be the “single source of truth”. Then the React 
+    component that renders a form also controls what happens in that form on subsequent user input. An input form 
+    element whose value is controlled by React in this way is called a “controlled component”.
+    
+    For full fledge forms React documentation says to checkout: https://formik.org/
+  */
     function UsernameForm() {
       const [username, setUsername] = React.useState('')
 

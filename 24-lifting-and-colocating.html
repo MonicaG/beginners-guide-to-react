@@ -4,7 +4,22 @@
   <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script type="text/babel">
-    function Name({name, onNameChange}) {
+  /*
+   Lifting state - moving state from the component to the "least common parent". For example, when multiple child 
+   components need access to the same state, the state will need to be at a parent component that is common to 
+   both. It should also be at the parent that is closest to both (not way up in the heirarchy)
+
+   This is all very similar to SwiftUI and its managing of state and single source of truth.
+
+   Co-locating state is moving state down to a child component because it is not needed at a parent level. This 
+   may happen when the requirements change, and state that was previously needed across multiple components
+   is only needed in one component now.
+
+   In this example the App component is the source of truth for the `name` state as it is used in multiple components,
+   (Name and Display components.) The FavoriteAnimal controls the `animal` state as only that component uses it.
+
+  */
+  function Name({name, onNameChange}) {
       return (
         <div>
           <label>Name: </label>
@@ -43,7 +58,6 @@
         </form>
       )
     }
-
     ReactDOM.render(<App />, document.getElementById('root'))
   </script>
 </body>

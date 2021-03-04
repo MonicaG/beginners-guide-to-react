@@ -4,9 +4,14 @@
   <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script type="text/babel">
-    function Message({children}) {
-      return <div className="message">{children}</div>
-    }
+
+  {/* A capital letter in JSX is the same as calling React.createElement with the function that you're referencing. 
+  That allows you to create a custom component that you can reuse in your code.
+  The Message component shows up in the component tab on the Chrome React Developer Tools Extension
+  This declares a function component.
+  See https://reactjs.org/docs/components-and-props.html
+  */}
+    const Message = props => <div className="message">{props.children}</div>
 
     const element = (
       <div className="container">

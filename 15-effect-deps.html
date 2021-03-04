@@ -8,7 +8,20 @@
       const [name, setName] = React.useState(
         () => window.localStorage.getItem('name') || '',
       )
-
+      /*
+      The problem we are solving in this example: We've created an App component
+      that uses this Greeting component. That App component also has state. When that
+      state changes, the Greeting component is also re-rendered. This means the useEffect 
+      hook is run, even though the `name` has not changed. This can be inefficient as we 
+      are updating localStorage when we don't need to, as nothing changed. 
+      
+      The solution: Use a dependency array so the effect only runs when the state it depends on
+      changes. Here, we rely on the name state only, and so it is provided in the array
+      
+      Note: Use the https://www.npmjs.com/package/eslint-plugin-react-hooks plugin to ensure
+      you are using hooks correctly. Part of the check is to ensure your dependcy array values
+      match the state used in your effect.
+      */
       React.useEffect(() => {
         window.localStorage.setItem('name', name)
       }, [name])

@@ -11,6 +11,16 @@
   <script src="https://unpkg.com/msw@0.20.5/lib/umd/index.js"></script>
   <script src="/pokemon-api.js"></script>
 
+  <!--
+    status and error states were added. To force an error change one of the field names in the
+    pokemonQuery const in the fetchPokemon function (i.e. change name to nam).
+
+    This isn't really how you would do http calls or handle errors, it's just an example. There should
+    be a library available that will handle this nicely.
+
+    React Developer Tools Tip: When the Components tab is open, press 'esc' key to also bring up the console.
+    Typing $r will give you the hooks, props, and type for the component that is currently selected.
+  -->
   <script type="text/babel">
     function PokemonInfo({pokemonName}) {
       const [status, setStatus] = React.useState('idle')
@@ -34,6 +44,11 @@
         )
       }, [pokemonName])
 
+      /* 
+      For indepth discussion of == (equality operator) vs === (identity operator) see:
+      https://stackoverflow.com/q/359494/4704303
+      In short, prefer === over ==
+      */
       if (status === 'idle') {
         return 'Submit a pokemon'
       }

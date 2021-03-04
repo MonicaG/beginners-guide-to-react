@@ -25,10 +25,27 @@
     }
   </style>
   <script type="text/babel">
+  /*
+  This function destructures props. Instead of doing:
+    function Box(props) {}
+  It does:
+    function Box({style, size, className = '', ...rest}){}
+  
+  Destructuring was introduced in ES6. It's a JS feature that allows you to extract multiple pieces of data from an array
+  or object and assign them to their own variable. So, with the Box component, the style, size and className are extracted. 
+  The className parameter has a default value of '' (empty space). Any extra values are assigned to the rest variable 
+  (it doesn't have to be named rest, but it seems to be a convention).
+
+  See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+  https://medium.com/@lcriswell/destructuring-props-in-react-b1c295005ce0
+
+  */
     function Box({style, size, className = '', ...rest}) {
       const sizeClassName = size ? `box--${size}` : ''
       return (
         <div
+        /* Note that className is the DOM name for class. If you go the browser web developer tools and in the console
+        do $0.className you will get the class for the element */
           className={`box ${className} ${sizeClassName}`}
           style={{fontStyle: 'italic', ...style}}
           {...rest}
@@ -38,6 +55,10 @@
 
     const element = (
       <div>
+        {/*  
+        Example of using the style prop which accepts an object rather than a string of styles.  
+        I don't think you would actually use this much. Styles will be in a CSS stylesheet instead.
+        */}
         <Box size="small" style={{backgroundColor: 'lightblue'}}>
           small lightblue box
         </Box>

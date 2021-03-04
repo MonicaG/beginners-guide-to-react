@@ -42,10 +42,30 @@
       align-items: center;
     }
   </style>
+
+  <!-- 
+    The problem: In this example we are using a 3rd party js library: VanillaTilt.js. The library animates an 
+    element when it is moused over. However, in our Tilt component the `tilt-root` is a React element, not a DOM node. 
+    React takes that element and renders it to the DOM. So, we need to get the DOM node created by React so we can
+    wire up the VanillaTilt.js to it.
+    
+    The solution: Use react refs. See https://reactjs.org/docs/refs-and-the-dom.html
+  -->
   <script type="text/babel">
     function Tilt({children}) {
-      const tiltRef = React.useRef()
 
+      /*
+      useRef() takes an optional initialValue parameter.  It returns a ref object whose `current` property is initialized
+      to that value. In this example it will be the `tilt-root` DOM node. The object returned is a plain JS object. 
+      */
+      const tiltRef = React.useRef()
+      /*
+      the useEffect hook is used because it runs after the DOM has been updated. Which is what we need because 
+      now we can get the DOM node for the `tilt-root` element and apply  VanillaTilt.js to it.
+      The useRef has a current property that we can mutate without triggering a re-render of our component, in this
+      case the Tilt component. We can use refs for more than just DOM nodes. We can use it for any value that we want 
+      to keep track of and mutate over time without triggering a re-render of our component.
+      */
       React.useEffect(() => {
         const tiltNode = tiltRef.current
         const vanillaTiltOptions = {
@@ -54,13 +74,34 @@
           glare: true,
           'max-glare': 0.5,
         }
+        // From VanillaTilt's documentation on how to use it the JS way.
         VanillaTilt.init(tiltNode, vanillaTiltOptions)
         return () => {
+          /*
+          In this example, if the checkbox is unchecked then the DOM node is removed from the page. However,
+          all the event handlers on that node still exist and there are references to the node in the VanillaTilt
+          java script code.  This uses up memory.  So, we return a function that will remove references to our
+          DOM node in the VanillaTilt js and remove all event handlers.
+          This function will be called on every update of the Tilt component. Which in this example is triggered
+          when the checkbox is checked/unchecked.
+          */
           tiltNode.vanillaTilt.destroy()
         }
-      }, [])
+      }, []) 
+      /*
+      The above dependency array is empty because nothing is updated. However, we need to provide it because otherwise
+      the useEffect hook would run with each re-render of the Tilt component. We don't want it to run because all it does 
+      is initialize and destory the VanillaTilt. But the VanillaTilt is not changed in any way in this example. So, it
+      is not optimal to be creating and destroying for each re-render. So, the empty depedency array says to run the 
+      hook when the Tilt component is initially mounted (added) to the DOM and run it when it is unmounted 
+      (removed) from the DOM.
+      */
 
       return (
+        /*
+         React will set the titleRef's `.current` property to `tilt-root` DOM node whenever it changes. However, this
+         update does not cause a re-render
+        */
         <div ref={tiltRef} className="tilt-root">
           <div className="tilt-child">{children}</div>
         </div>

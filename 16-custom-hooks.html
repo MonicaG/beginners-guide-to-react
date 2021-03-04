@@ -4,6 +4,15 @@
   <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script type="text/babel">
+
+  /*
+  The problem: using local storage maybe something we want to use in other components. We don't want to 
+  duplicate the code across multiple components
+
+  The solution: Refactor the useState and useEffect hooks into a function that can be used by any component.
+  By convention prefix the function name with 'use'. This will allow the  https://www.npmjs.com/package/eslint-plugin-react-hooks 
+  plugin to run the hooks checks on your custom hook functions.
+  */
     function useLocalStorageState(key, defaultValue = '') {
       const [state, setState] = React.useState(
         () => window.localStorage.getItem(key) || defaultValue,
@@ -11,7 +20,11 @@
 
       React.useEffect(() => {
         window.localStorage.setItem(key, state)
-      }, [key, state])
+        /* have to provide both key and the state in the dependency array. In the previous example it was hardcoded 
+        as name, so we didn't have to worry about it. But now that it is a variable, it's value could change. So
+        we need to monitor it.
+        */
+      }, [key, state])  
 
       return [state, setState]
     }

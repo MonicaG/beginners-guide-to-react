@@ -11,28 +11,64 @@
     function App() {
       function handleClick() {
         setState({eventCount: state.eventCount + 1})
+        /*
+        JSON.stringify lets us see the contents of the state dictionary, rather than displaying [object Object]
+        See: https://stackoverflow.com/questions/41336663/console-logresult-returns-object-object-how-do-i-get-result-name
+        */
+        
+        console.log("state in handleClick:" + JSON.stringify(state))
       }
 
+      /*
+       EventHandlers are passed instances of SyntheticEvent. The eventHandler may or
+       may not use it. The handleClick() function above does not, but the handleChange(event)
+       function below does.
+       The SyntheticEvent is a wrapper around the brower's native event.  This was done to
+       normalizes events so that they have consistent properties across different browsers.
+       See: https://reactjs.org/docs/events.html
+       */
       function handleChange(event) {
+        /*
+        * event.target.value -  In this case it is the HTML input element's value. 
+        */
         setState({username: event.target.value})
+        //can get other attributes too. example:
+        console.log(event.target.id)
+        console.log("state in handleChange: " + JSON.stringify(state))
       }
 
       return (
         <div>
           <p>There have been {state.eventCount} events.</p>
           <p>
+          {/* 
+            * React uses camelCase vs lowercase for event names. onClick vs onclick
+            * A function is passed as the eventHandler rather than a string. Here
+            * the function `handleClick` (defined above) is passed to the onClick event.
+           */}
             <button onClick={handleClick}>Click Me</button>
           </p>
           <p>You typed: {state.username}</p>
           <p>
-            <input onChange={handleChange} />
+            <input id="myId" onChange={handleChange} />
           </p>
         </div>
       )
     }
 
+    /* 
+    * This is not typically how you re-render an application or manage state in a React application, but this will 
+    * work to show how events work in React. 
+    */
     function setState(newState) {
+      /*
+      Object.assign - properties in the target object are overwritten by properties in the sources if they have the same key.
+      Keys that exist in the target object but not in the source object are left alone.
+      https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+      */
       Object.assign(state, newState)
+      //not how this is usually done as the entire app is being rerendered for the change. See the next file 12-state.html
+      //for an example on how to actually use state.
       renderApp()
     }
 

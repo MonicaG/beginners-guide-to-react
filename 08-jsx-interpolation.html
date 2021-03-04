@@ -6,9 +6,19 @@
   <script type="text/babel">
     function CharacterCount({text}) {
       return (
-        <div>
-          {`The text "${text}" has `}
-          {text.length ? <strong>{text.length}</strong> : 'No'}
+        /*The function declaration and return statement is js.*/
+        <div> {/*The div tag and anything between it is jsx */}
+        {/* 
+        However, using the { puts us back into js. But it is limited. Can only use expressions. 
+        You can't use things like loops or if statements. Turnary operations are ok. You can't use statements
+        because ultimately what is happening is Babel is compiling to React.createElement(...) and you can't
+        pass an if statement to it.
+        */}
+          {`The text "${text}" has `}  {/* This uses a template literal. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals*/}
+          {/* Here we go into JavaScript again with the {, but the <strong> puts us back into jsx, then the { puts
+          us into javascript, then we exit javascript with the } and back to jsx and then back into js with the : 'No' and
+          finally exit batck to jsx with the final }*/}
+          {text.length ? <strong>{text.length}</strong> : 'No'} 
           {' characters'}
         </div>
       )

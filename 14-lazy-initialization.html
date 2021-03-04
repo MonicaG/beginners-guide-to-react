@@ -5,6 +5,13 @@
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script type="text/babel">
     function Greeting() {
+      /*
+      The problem we are solving in this example: the parameter passed to the the useState() hook as the initial state is
+      only used for the first render. After that the hook ignores it. So, there may be scenarios where providing that 
+      parameter is expensive (i.e. reading in a big JSON file, doing an API call etc.). We only want to do that once.
+      So we can do a lazy intializer by providing a function to the hook instead. That function will only be executed 
+      on the first render.
+     */
       const [name, setName] = React.useState(
         () => window.localStorage.getItem('name') || '',
       )

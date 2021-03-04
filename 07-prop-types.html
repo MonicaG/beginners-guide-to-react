@@ -1,6 +1,8 @@
 <body>
   <div id="root"></div>
-  <script src="https://unpkg.com/react@16.12.0/umd/react.production.min.js"></script>
+  {# using the production js will not perform the propTypes checking. No errors will be displayed in the console  #}
+  {# <script src="https://unpkg.com/react@16.12.0/umd/react.production.min.js"></script>  #}
+  <script src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script src="https://unpkg.com/prop-types@15.6.1/prop-types.js"></script>
@@ -14,6 +16,15 @@
         </div>
       )
     }
+    {/* 
+      propTypes is a plugin that does runtime validations on properties. This is to check for when bad arguments are used.
+      The errors will show up in the browswer Developer Tools console.
+      Notice the prop-types.js file included in the script block above in order to use this feature.
+      See: https://www.npmjs.com/package/prop-types for more details
+      PropTypes are not applied in production. They are only used in development. 
+      Can remove PropTypes code from production code with https://www.npmjs.com/package/babel-plugin-transform-react-remove-prop-types
+      For large code bases use TypeScript or Flow instead: https://reactjs.org/docs/static-type-checking.html
+    */}
     SayHello.propTypes = {
       firstName: PropTypes.string.isRequired,
       lastName: PropTypes.string.isRequired,

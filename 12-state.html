@@ -4,16 +4,37 @@
   <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script type="text/babel">
+   /*
+      This function uses React Hooks for maintaining state. Hooks let you use state and other React features without 
+      writing a class. It is a special function that lets you “hook into” React features. For example, useState() is 
+      a Hook that lets you add React state to function components.
+      See: https://reactjs.org/docs/hooks-state.html
+    */
     function Greeting() {
-      const [name, setName] = React.useState('')
-      const handleChange = event => setName(event.target.value)
+     /*
+       The useState hook accepts an initial value, in this case an empty string. It returns
+       an array of two items. The square brackets [name, setName] is JS syntax for array destructuring. nameEntered is set 
+       to the first array value and setNameEntered is set to the second value. The first element is the current value,
+       the second element is a function that lets us update it. 
+       See: https://reactjs.org/docs/hooks-state.html#tip-what-do-square-brackets-mean
+      */
+      const [nameEntered, setNameEntered] = React.useState('')
+      /*
+      This syntax is a function expression. `event` is a parameter, everything after the => is the function.
+      The fuction in this case calls the setNameEntered function from above. React updates the nameEntered value.
+      See: https://www.w3schools.com/Js/js_es6.asp#mark_arrow
+      
+      */
+      const handleChange = event => setNameEntered(event.target.value)
+
       return (
         <div>
           <form>
+          {/* htmlFor is the html `for` attribute. But in JSX need to use htmlFor as `for` is a keyword*/}
             <label htmlFor="name">Name: </label>
             <input onChange={handleChange} id="name" />
           </form>
-          {name ? <strong>Hello {name}</strong> : 'Please type your name'}
+          {nameEntered ? <strong>Hello {nameEntered}</strong> : 'Please type your name'}
         </div>
       )
     }

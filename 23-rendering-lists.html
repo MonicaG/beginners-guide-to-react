@@ -4,11 +4,30 @@
   <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script type="text/babel">
+    /*
+      When rendering a list of items in React you may get the console warning: 
+      “Warning: Each child in a list should have a unique key prop."
+  
+       The way React updates the DOM is it has a reference to the JSX elements that you gave it the last time it 
+       rendered this app component. It compares those React elements with the new React elements that you returned 
+       this time. Then it updates the DOM accordingly. When you're giving it an array of React elements, unless
+       React has some sort of identifier to know which element is which, it doesn't know what changed. Did you
+       remove the first element and add a new one? Did you reorder the elements? etc. etc. It doesn't know what 
+       you did to this array of React elements between the last time it rendered and this time. Any time you're 
+       rendering an array of React elements, you need to give it a key so that it can determine whether elements 
+       were removed, added, or modified.
+      
+       So you need to provide a unique key for each items to fix the problem. Don't use the index. Use an id on
+       the element.
+
+       In this example note that when a key is not provided that removing an item from the middle of the list 
+       does not update the list properly. 
+    */
     const allItems = [
-      {id: 'a', value: 'apple'},
-      {id: 'o', value: 'orange'},
-      {id: 'g', value: 'grape'},
-      {id: 'p', value: 'pear'},
+      { id: 'a', value: 'apple' },
+      { id: 'o', value: 'orange' },
+      { id: 'g', value: 'grape' },
+      { id: 'p', value: 'pear' },
     ]
 
     function App() {
@@ -27,9 +46,15 @@
           <button disabled={items.length >= allItems.length} onClick={addItem}>
             add item
           </button>
-          <ul style={{listStyle: 'none', paddingLeft: 0}}>
+          <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
+            {/*
+             
+            */}
             {items.map(item => (
               <li>
+              {/* provide a key instead so as not to get the warning.
+                <li key={item.id}>
+              */}
                 <button onClick={() => removeItem(item)}>remove</button>{' '}
                 <label htmlFor={`${item.value}-input`}>{item.value}</label>{' '}
                 <input id={`${item.value}-input`} defaultValue={item.value} />
@@ -43,13 +68,15 @@
     ReactDOM.render(<App />, document.getElementById('root'))
   </script>
 
+  <!-- This example shows what happens when you provide no key, duplicate keys and properly set keys. Note 
+  that the focus does not move properly when no key or duplicate keys are used. -->
   <script type="text/babel">
     function FocusDemo() {
       const [items, setItems] = React.useState([
-        {id: 'a', value: 'apple'},
-        {id: 'o', value: 'orange'},
-        {id: 'g', value: 'grape'},
-        {id: 'p', value: 'pear'},
+        { id: 'a', value: 'apple' },
+        { id: 'o', value: 'orange' },
+        { id: 'g', value: 'grape' },
+        { id: 'p', value: 'pear' },
       ])
 
       React.useEffect(() => {

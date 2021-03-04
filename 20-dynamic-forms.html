@@ -4,6 +4,15 @@
   <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script type="text/babel">
+
+  /*
+    Problem: In this example, an error message will be displayed dynamically if the user types something invalid.
+    This means the user doesn't have to wait until the form is submitted to know they've entered something wrong.
+    In this case only lower case letters are allowed.
+
+    The solution: useState hook is used to store state. Note that a boolean const called 'error' is also declared. 
+    It is used to display an error message and disable the submit button if it is true.
+  */
     function UsernameForm() {
       const [username, setUsername] = React.useState('')
       const isLowerCase = username === username.toLowerCase()

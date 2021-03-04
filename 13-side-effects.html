@@ -5,11 +5,24 @@
   <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
   <script type="text/babel">
     function Greeting() {
+      
       const [name, setName] = React.useState(
         window.localStorage.getItem('name') || '',
       )
-
+      /*
+      The `useEffect` Hook lets you perform side effects in function components. In this example, we want
+      to have the entered value saved in localStorage so on a page refresh, that value will be retrieved
+      and displayed. This is called a side effect. 
+      When React renders the Greeting component, it will remember the effect below, and run it after updating 
+      the DOM. This happens for every render, including the first one.
+      Effects scheduled with useEffect don’t block the browser from updating the screen
+      See: https://reactjs.org/docs/hooks-effect.html
+      */
       React.useEffect(() => {
+        /*
+        The local storage can be viewed in Chrome developer tools by going to the 'Applications' tab -> 
+        Storage -> Local Storage. In FireFox it's 'Storage' tab -> Local Storage
+        */
         window.localStorage.setItem('name', name)
       })
 
@@ -19,6 +32,9 @@
         <div>
           <form>
             <label htmlFor="name">Name: </label>
+            {/* changed from previous file (12-state.html). Now we provide the value attribute
+              on the input element. This is so it displays what was previously entered.
+            . */}
             <input value={name} onChange={handleChange} id="name" />
           </form>
           {name ? <strong>Hello {name}</strong> : 'Please type your name'}

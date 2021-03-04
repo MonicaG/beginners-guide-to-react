@@ -8,7 +8,12 @@
     const children = 'Hello World'
     const className = 'container'
     const props = {children, className}
-    const element = <div {...props} />
+    {/* 
+     Here the className is being overridden. So the className of 'container' is overwritten with 'not-container' 
+    The {...props} syntax is called spread. It is used where 0 or more arguments are expected.
+    See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax #}
+  */}  
+    const element = <div id="app-root" {...props} className="not-container"/>
     ReactDOM.render(element, rootElement)
   </script>
 </body>

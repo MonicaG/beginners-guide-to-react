@@ -6,12 +6,38 @@
   <script type="text/babel">
     function UsernameForm() {
       function handleSubmit(event) {
+        /* 
+        When the form is submitted the browser automatically makes a post request to the current URL
+        with the form data. The event.preventDefault() stops that post request from happening. 
+        
+        In this example we are using uncontrolled-components. 
+        React generally recommends using controlled-components for forms. 
+        See: https://reactjs.org/docs/uncontrolled-components.html
+        */
         event.preventDefault()
+        /*
+        console.dir logs the properties of the element
+        See: https://developer.mozilla.org/en-US/docs/Web/API/Console/dir
+        */
+        console.dir(event.target)
+        /*
+        Problem: Get the username entered in the form and display it in an alert box
+
+        The solution: Set the input id and label htmlFor properties. Access the element using
+        the input id to get the value.
+        An alternative solution would be to use refs (See: 17-dom-refs.html), but this is a bit cleaner
+        solution in this case.
+        */
         const username = event.target.elements.usernameInput.value
         alert(`You entered: ${username}`)
       }
 
       return (
+        /*
+        onsubmit handler is put on form instead of button, because the submit button has functionality that
+        allows the form to be submitted when the enter key is hit. We don't to break that functionality as
+        everyone expects to hit enter and have the form submitted.
+        */
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="usernameInput">Username:</label>

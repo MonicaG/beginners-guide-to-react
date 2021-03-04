@@ -15,10 +15,15 @@
     function PokemonInfo({pokemonName}) {
       const [pokemon, setPokemon] = React.useState(null)
 
+      //HTTP requests are asynchronous calls, so we need to use a useEffect hook
       React.useEffect(() => {
         if (!pokemonName) {
           return
         }
+        /*
+        The fetchPokemon function returns a Promise. When we get it we update the pokemon state with the pokemonData 
+        (which is JSON in  this example). And in this example the JSON data is dumped into a <pre></pre> tag 
+        */
         fetchPokemon(pokemonName).then(pokemonData => {
           setPokemon(pokemonData)
         })
@@ -28,6 +33,7 @@
         return 'Submit a pokemon'
       }
 
+      //this is displayed while waiting for the data to be fetched.
       if (!pokemon) {
         return '...'
       }
@@ -75,10 +81,18 @@
           }
         }
       `
+      /*
+        This pokemon URL doesn't exist any more. It is being mocked. See the 2 scripts added at the top of this file 
+        for the mock.
 
+        For details on fetch see: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+        May also want to look at libraries for doing HTTP requests as well.
+
+        The window doesn't need to be provided. Could just call fetch() itself. 
+      */
       return window
         .fetch('https://graphql-pokemon.now.sh', {
-          // learn more about this API here: https://graphql-pokemon.now.sh/
+         
           method: 'POST',
           headers: {
             'content-type': 'application/json;charset=UTF-8',
@@ -88,8 +102,10 @@
             variables: {name},
           }),
         })
+        //each then() statement returns a newly generated Promise
         .then(r => r.json())
         .then(response => response.data.pokemon)
+        
     }
 
     ReactDOM.render(<App />, document.getElementById('root'))
